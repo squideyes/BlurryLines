@@ -11,11 +11,15 @@ namespace BlurryLines
     {
         public static readonly DependencyProperty RowsProperty =
             DependencyProperty.Register("Rows", typeof(int), typeof(Board),
-            new PropertyMetadata(32, OnGridPropertiesChanged));
+            new PropertyMetadata(32, OnResetBoard));
 
         public static readonly DependencyProperty ColumnsProperty =
             DependencyProperty.Register("Columns", typeof(int), typeof(Board),
-            new PropertyMetadata(32, OnGridPropertiesChanged));
+            new PropertyMetadata(32, OnResetBoard));
+
+        public static readonly DependencyProperty CellSizeProperty =
+            DependencyProperty.Register("CellSize", typeof(int), typeof(Board),
+            new PropertyMetadata(10, OnResetBoard));
 
         private class Cells
         {
@@ -33,6 +37,7 @@ namespace BlurryLines
                     Rows.Add(cells);
                 }
             }
+
             public List<List<Cell>> Rows { get; }
         }
 
@@ -126,32 +131,39 @@ namespace BlurryLines
             }
         }
 
+        public int CellSize
+        {
+            get
+            {
+                return (int)GetValue(CellSizeProperty);
+            }
+            set
+            {
+                SetValue(CellSizeProperty, value);
+            }
+        }
+
         protected void OnPropertyChanged(string propertyName)
         {
             if (PropertyChanged != null)
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private static void OnGridPropertiesChanged(DependencyObject dependencyObject,
-               DependencyPropertyChangedEventArgs e)
+        private static void OnResetBoard(DependencyObject dependencyObject,
+            DependencyPropertyChangedEventArgs e)
         {
             var board = dependencyObject as Board;
 
             board.OnPropertyChanged(nameof(Rows));
             board.OnPropertyChanged(nameof(Columns));
 
-            board.OnGridPropertiesChanged(e);
-        }
-
-        private void OnGridPropertiesChanged(DependencyPropertyChangedEventArgs e)
-        {
-            Reset();
+            board.Reset();
         }
 
         private void Reset()
         {
-            Width = Columns * 12;
-            Height = Rows * 12;
+            Width = Columns * CellSize;
+            Height = Rows * CellSize;
 
             board.DataContext = new Cells(Columns, Rows);
         }

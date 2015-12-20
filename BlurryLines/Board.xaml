@@ -6,8 +6,8 @@
     <UserControl.Resources>
         <DataTemplate x:Key="CellTemplate">
             <Border x:Name="Border"
-                    Width="12"
-                    Height="12"
+                    Width="{Binding CellSize}"
+                    Height="{Binding CellSize}"
                     Background="{Binding FillColor}"
                     BorderBrush="Black"
                     BorderThickness="0.5">

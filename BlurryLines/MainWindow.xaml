@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize">
     <StackPanel Margin="8">
-        <local:Board x:Name="board" Rows="16" Columns="24" />
+        <local:Board x:Name="board" Rows="16" Columns="24" CellSize="11" />
         <Button Margin="0,4,0,0"
                 Click="Button_Click"
                 Content="Set Random Cell to Random Color" />
